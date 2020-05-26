@@ -1,14 +1,18 @@
 const connection = require('../database/connection')
 
-module.exports = {
-    async create(req, res) {
-        const { id } = req.body;
-        const ong = await connection('ongs').where('id', id).select('name').first();
+ module.exports = {
+    async create(request, response) {
+       const { id } = request.body
 
-        if(!ong) {
-            return res.status(400).json({error: 'No ong found.'})
-        }
+       const ong = await connection('ongs')
+         .where('id', id)
+         .select('name')
+         .first()
 
-        return res.json(ong)
+      if (!ong) {
+         return response.status(400).json({ Error: 'ONG doesn\'t exists' })
+      }
+
+      return response.json(ong)
     }
-}
+ }
